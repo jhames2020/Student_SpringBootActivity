@@ -19,34 +19,33 @@ import com.student.demo.repository.StudentRepository;
 @RestController
 @RequestMapping("/studentDetails")
 public class StudentController {
-
     private final StudentRepository studentRepository;
 
     public StudentController(StudentRepository studentRepository){
         this.studentRepository =studentRepository;
     }
 
-    @PostMapping("/saveStudent")
+    @PostMapping("/addStudent")
     public Student addStudent(@RequestBody Student student) {
         return studentRepository.save(student);
     }
 
-    @GetMapping("/displayStudents")
+    @GetMapping("/getAllStudents")
     public List<Student> getAllStudents(){
         return studentRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public Optional<Student> getById(@PathVariable Long id) {
         return studentRepository.findById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public void deleteById(@PathVariable Long id){
         studentRepository.deleteById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateById/{id}")
     public Student updateById(@PathVariable Long id, @RequestBody Student updatedStudent){
         Student student = studentRepository.findById(id).orElseThrow();
         student.setFirstname(updatedStudent.getFirstname());
@@ -57,11 +56,11 @@ public class StudentController {
     }
 
     @PostMapping("/{id}/enroll")
-        public Student enroll(@PathVariable Long id, @RequestBody Course course){
+    public Student enroll(@PathVariable Long id, @RequestBody Course course){
         Student student = studentRepository.findById(id).orElseThrow();
         student.setCourse(course);
         return studentRepository.save(student);
-        }
+    }
 
     @PostMapping("/{id}/drop")
     public Student drop(@PathVariable Long id, @RequestBody Course course){
@@ -69,5 +68,4 @@ public class StudentController {
         student.setCourse(null);
         return studentRepository.save(student);
     }
-
 }

@@ -24,28 +24,28 @@ public class CourseController {
     public CourseController(CourseRepository courseRepository){
         this.courseRepository = courseRepository;
     }
-    
+
     @PostMapping("/addCourse")
     public Course addCourse(@RequestBody Course course){
         return courseRepository.save(course);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable Long id){
-        courseRepository.deleteById(id);
-    }
-
-    @GetMapping("/displayCourses")
+    @GetMapping("/getAllCourses")
     public List<Course> getAllCourse(){
         return courseRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getCourseById/{id}")
     public Optional<Course> getCourseById(@PathVariable Long id){
         return courseRepository.findById(id);
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/deleteCourse/{id}")
+    public void deleteCourse(@PathVariable Long id){
+        courseRepository.deleteById(id);
+    }
+
+    @PutMapping("/updateCourse/{id}")
     public Course updatedCourse(@PathVariable Long id, @RequestBody Course updatedCourse){
         Course course = courseRepository.findById(id).orElseThrow();
         course.setName(updatedCourse.getName());
